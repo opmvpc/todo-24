@@ -21,7 +21,7 @@ Route::middleware('auth')->group(function () {
         "index",
         "store",
         "update",
-        "delete",
+        "destroy",
     ]);
 });
 

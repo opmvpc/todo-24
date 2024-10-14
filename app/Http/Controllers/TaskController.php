@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Task;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -33,7 +34,14 @@ class TaskController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            "name" => "required|min:3|string",
+        ]);
+
+        $user = User::find(Auth::id());
+        $user->tasks()->create($validated);
+
+        return redirect()->back();
     }
 
     /**
@@ -57,7 +65,10 @@ class TaskController extends Controller
      */
     public function update(Request $request, Task $task)
     {
-        //
+        $task->is_done = !$task->is_done;
+        $task->save();
+
+        return back();
     }
 
     /**
@@ -65,6 +76,8 @@ class TaskController extends Controller
      */
     public function destroy(Task $task)
     {
-        //
+        $task->delete();
+
+        return back();
     }
 }
